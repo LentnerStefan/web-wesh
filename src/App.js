@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import HomePage from './pages/Home';
+//Import Hamoni Sync
+import Hamoni from "hamoni-sync";
+
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Web-Wesh</h1>
-          <p style={{"color":"#777"}}>Créons ensemble le prochain Wesh !</p>
-          <p> OUAI !</p>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <HomePage />
       </div>
+
     );
   }
 }
+
 
 export default App;

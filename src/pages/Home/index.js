@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import ButtonWithText from '../../components/ButtonWithText'
+import ActionTable from '../../components/ActionTable'
 
 class HomePage extends Component {
   render() {
@@ -12,7 +12,10 @@ class HomePage extends Component {
           <p style={{"color":"#777"}}>Créons ensemble le prochain Wesh !</p>
           <p> OUAI !</p>
         </header>
-        <ButtonWithText/>
+
+        <div>
+          <ActionTable/>
+        </div>
       </div>
     );
   }
