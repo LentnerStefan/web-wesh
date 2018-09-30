@@ -15,8 +15,9 @@ class ActionTable extends Component {
     super();
     this.state = {
       data: [],
-      firstName: "",
-      lastName: ""
+      prenom: "",
+      action: "",
+      commentaire:""
     };
   }
   // Initialize Hamoni DB
@@ -58,18 +59,25 @@ class ActionTable extends Component {
   }
 
   handleChange = event => {
-    if (event.target.name === "firstName")
-      this.setState({ firstName: event.target.value });
-    if (event.target.name === "lastName")
-      this.setState({ lastName: event.target.value });
+    if (event.target.name === "prenom")
+      this.setState({ prenom: event.target.value });
+    if (event.target.name === "action")
+      this.setState({ action: event.target.value });
+    if (event.target.name === "date")
+    //would be better to adapt date display to local standards
+      this.setState({ date: event.target.value });
+    if (event.target.name === "commentaire")
+      this.setState({ commentaire: event.target.value });
   };
 
   handleSubmit = event => {
     this.listPrimitive.add({
-      firstName: this.state.firstName,
-      lastName: this.state.lastName
+      prenom: this.state.prenom,
+      action: this.state.action,
+      date: this.state.date,
+      commentaire: this.state.commentaire
     });
-    this.setState({ firstName: "", lastName: "" });
+    this.setState({ prenom: "", action: "", date:"", commentaire:"" });
     event.preventDefault();
   };
 
@@ -96,27 +104,45 @@ class ActionTable extends Component {
 
     return (
       <div className="ActionTable">
-        <header className="App-header">
-          <h1 className="App-title">Realtime React Datagrid</h1>
-        </header>
+        <h2>Entrainement sur todo list </h2>
         <p className="App-intro">
           <form onSubmit={this.handleSubmit}>
-            <h3>Add new record</h3>
+            <h4>Nouvelle Action</h4>
             <label>
-              FirstName:
+              Prénom:
               <input
                 type="text"
-                name="firstName"
-                value={this.state.firstName}
+                name="prenom"
+                value={this.state.prenom}
                 onChange={this.handleChange}
               />
             </label>{" "}
             <label>
-              LastName:
+              Action:
               <input
                 type="text"
-                name="lastName"
-                value={this.state.lastName}
+                name="action"
+                value={this.state.action}
+                onChange={this.handleChange}
+              />
+            </label>
+            {"   "}
+            <label>
+              Date:
+              <input
+                type="date"
+                name="date"
+                value={this.state.date}
+                onChange={this.handleChange}
+              />
+            </label>
+            {"   "}
+            <label>
+              Commentaire:
+              <input
+                type="text"
+                name="commentaire"
+                value={this.state.commentaire}
                 onChange={this.handleChange}
               />
             </label>
@@ -129,28 +155,37 @@ class ActionTable extends Component {
             data={data}
             columns={[
               {
-                Header: "First Name",
-                accessor: "firstName",
-                Cell: this.renderEditable
+                Header: "Prénom",
+                accessor: "prenom",
+                Cell: this.renderEditable,
+                // il faudrait rendre ça dynamique ?
+                maxWidth: 150
               },
               {
-                Header: "Last Name",
-                accessor: "lastName",
-                Cell: this.renderEditable
+                Header: "Action",
+                accessor: "action",
+                Cell: this.renderEditable,
+                minWidth: 200
               },
               {
-                Header: "Full Name",
-                id: "full",
-                accessor: d => (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: d.firstName + " " + d.lastName
-                    }}
-                  />
-                )
+                Header: "Date",
+                accessor: "date",
+                Cell: this.renderEditable,
+                width : 100
+              },
+              {
+                Header: "Commentaire",
+                accessor: "commentaire",
+                Cell: this.renderEditable
               }
             ]}
             defaultPageSize={10}
+            defaultSorted={[
+                      {
+                        id: "age",
+                        desc: true
+                      }
+                    ]}
             className="-striped -highlight"
           />
         </div>
