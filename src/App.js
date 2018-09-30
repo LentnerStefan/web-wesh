@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import HomePage from './pages/Home';
-//Import Hamoni Sync
-import Hamoni from "hamoni-sync";
+
 
 class App extends Component {
   render() {

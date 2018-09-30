@@ -19,21 +19,60 @@ class ActionTable extends Component {
       lastName: ""
     };
   }
+  // Initialize Hamoni DB
+  componentDidMount () {
+      let hamoni = new Hamoni("65879366-edcf-4167-ab97-b69869fbf6c9", "b3d66acccd044d088348938ae38d5606");
+      hamoni
+      .connect()
+      .then(() => {
+        hamoni
+          .get("Web-Wesh")
+          .then(listPrimitive => {
+            this.listPrimitive = listPrimitive;
+
+            this.setState({
+              data: [...listPrimitive.getAll()]
+            });
+
+            listPrimitive.onItemAdded(item => {
+              this.setState({ data: [...this.state.data, item.value] });
+            });
+
+            listPrimitive.onItemUpdated(item => {
+              let data = [
+                ...this.state.data.slice(0, item.index),
+                item.value,
+                ...this.state.data.slice(item.index + 1)
+              ];
+
+              this.setState({ data: data });
+            });
+
+            listPrimitive.onSync(data => {
+              this.setState({ data: data });
+            });
+          })
+          .catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
+  }
+
   handleChange = event => {
     if (event.target.name === "firstName")
       this.setState({ firstName: event.target.value });
     if (event.target.name === "lastName")
       this.setState({ lastName: event.target.value });
   };
+
   handleSubmit = event => {
-    this.listPrimitive.push({
-        firstName: this.state.firstName,
-        lastName: this.state.lastName
+    this.listPrimitive.add({
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
     });
     this.setState({ firstName: "", lastName: "" });
     event.preventDefault();
-    console.log("submit ok");
   };
+
   renderEditable = cellInfo => {
     return (
       <div
@@ -51,11 +90,15 @@ class ActionTable extends Component {
       />
     );
   };
+
   render() {
     const { data } = this.state;
+
     return (
       <div className="ActionTable">
-
+        <header className="App-header">
+          <h1 className="App-title">Realtime React Datagrid</h1>
+        </header>
         <p className="App-intro">
           <form onSubmit={this.handleSubmit}>
             <h3>Add new record</h3>
@@ -77,6 +120,7 @@ class ActionTable extends Component {
                 onChange={this.handleChange}
               />
             </label>
+            {"   "}
             <input type="submit" value="Add" />
           </form>
         </p>
@@ -115,38 +159,5 @@ class ActionTable extends Component {
   }
 }
 
-// Initialize Hamoni DB
-const componentDidMount = () => {
-    let hamoni = new Hamoni("65879366-edcf-4167-ab97-b69869fbf6c9", "b3d66acccd044d088348938ae38d5606");
-    hamoni
-      .connect()
-      .then(() => {
-        hamoni
-        .get("Web-Wesh")
-        .then(listPrimitive => {
-          this.listPrimitive = listPrimitive;
-          this.setState({
-            data: [...listPrimitive.getAll()]
-          });
-          listPrimitive.onItemAdded(item => {
-            this.setState({ data: [...this.state.data, item.value] });
-          });
-          listPrimitive.onItemUpdated(item => {
-            let data = [
-            ...this.state.data.slice(0, item.index),
-            item.value,
-            ...this.state.data.slice(item.index + 1)
-            ];
-            this.setState({ data: data });
-          });
-          listPrimitive.onSync(data => {
-            this.setState({ data: data });
-          });
-        })
-        .catch(console.log);
-      })
-      .catch(console.log);
-  };
-componentDidMount();
 
 export default ActionTable;

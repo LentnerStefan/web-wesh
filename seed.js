@@ -11,6 +11,6 @@ hamoni
         { firstName: "Jimmy", lastName: "August" }
       ])
       .then(() => console.log("create success"))
-      .catch(console.log);
+      .catch(console.log("seed.js"));
   })
-  .catch(console.log);
+  .catch(console.log("seed"));
