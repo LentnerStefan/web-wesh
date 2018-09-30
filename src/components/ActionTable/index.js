@@ -17,6 +17,7 @@ class ActionTable extends Component {
       data: [],
       prenom: "",
       action: "",
+      etat:[],
       commentaire:""
     };
   }
@@ -66,6 +67,14 @@ class ActionTable extends Component {
     if (event.target.name === "date")
     //would be better to adapt date display to local standards
       this.setState({ date: event.target.value });
+    if (event.target.name === "etat1")
+      this.setState({ etat: event.target.value });
+    if (event.target.name === "etat2")
+      this.setState({ etat: event.target.value });
+    if (event.target.name === "etat3")
+      this.setState({ etat: event.target.value });
+    if (event.target.name === "etat4")
+      this.setState({ etat: event.target.value });
     if (event.target.name === "commentaire")
       this.setState({ commentaire: event.target.value });
   };
@@ -75,10 +84,18 @@ class ActionTable extends Component {
       prenom: this.state.prenom,
       action: this.state.action,
       date: this.state.date,
+      etat1: this.state.etat1,
+      etat2: this.state.etat2,
+      etat3: this.state.etat3,
+      etat4: this.state.etat4,
       commentaire: this.state.commentaire
     });
-    this.setState({ prenom: "", action: "", date:"", commentaire:"" });
+    this.setState({ prenom: "", action: "", date:"", etat1:"", etat2:"", etat3:"", etat4:"", commentaire:"" });
     event.preventDefault();
+  };
+
+  handleDelete = event => {
+      this.setState({ prenom: "", action: "", date:"", etat1:"", etat2:"", etat3:"", etat4:"", commentaire:"" });
   };
 
   renderEditable = cellInfo => {
@@ -115,6 +132,7 @@ class ActionTable extends Component {
                 name="prenom"
                 value={this.state.prenom}
                 onChange={this.handleChange}
+                width="150"
               />
             </label>{" "}
             <label>
@@ -135,6 +153,16 @@ class ActionTable extends Component {
                 value={this.state.date}
                 onChange={this.handleChange}
               />
+            </label>
+            {"   "}
+            <label>
+              <form>
+                Etat:
+                <input type="radio" name="etat" value={this.state.etat1} onChange={this.handleChange}/> A faire
+                <input type="radio" name="etat" value={this.state.etat2} onChange={this.handleChange}/> En cours
+                <input type="radio" name="etat" value={this.state.etat3} onChange={this.handleChange}/> Bloqué
+                <input type="radio" name="etat" value={this.state.etat4} onChange={this.handleChange}/> Terminé
+              </form>
             </label>
             {"   "}
             <label>
@@ -174,10 +202,22 @@ class ActionTable extends Component {
                 width : 100
               },
               {
+                Header: "Etat",
+                accessor: "etat",
+                Cell: this.renderEditable,
+                width : 50
+              },
+              {
                 Header: "Commentaire",
                 accessor: "commentaire",
                 Cell: this.renderEditable
-              }
+              },
+              {
+                id: 'delete',
+                accessor: "",
+                Cell: row => (<button onClick={this.handleDelete}>Effacer</button>),
+                width: 70
+              },
             ]}
             defaultPageSize={10}
             defaultSorted={[
